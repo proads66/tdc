@@ -3,14 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<title>Landing Template</title>
+<title>GG.VIP</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Dancing+Script:wght@600;700&family=Playfair+Display:wght@600;700;800&display=swap&subset=vietnamese" rel="stylesheet">
-<!--
-  MẪU LANDING — MOBILE FIRST · Thay nội dung ở chỗ [EDIT].
-  Deploy free: Cloudflare Pages / Vercel / GitHub Pages.
--->
+
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -293,60 +290,26 @@ var EMBED_URL = "https://vimeo.com/1206755949";
 function toEmbed(url){
   url = (url||"").trim();
   if(!url) return null;
-
-  // YouTube
   var yt = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{11})/);
-  if(yt) return {
-    type:'iframe',
-    src:'https://www.youtube.com/embed/'+yt[1]
-        +'?autoplay=1&mute=1&controls=0&modestbranding=1'
-        +'&rel=0&showinfo=0&iv_load_policy=3&loop=1&playlist='+yt[1]
-  };
-
-  // Vimeo
+  if(yt) return {type:'iframe', src:'https://www.youtube.com/embed/'+yt[1]};
   var vm = url.match(/vimeo\.com\/(\d+)/);
-  if(vm) return {
-    type:'iframe',
-    src:'https://player.vimeo.com/video/'+vm[1]
-        +'?autoplay=1&muted=1&loop=1&background=1'
-        +'&title=0&byline=0&portrait=0&transparent=0'
-  };
-
-  // File video trực tiếp
+  if(vm) return {type:'iframe', src:'https://player.vimeo.com/video/'+vm[1]};
   if(/\.(mp4|webm|ogg)(\?.*)?$/i.test(url)) return {type:'video', src:url};
-
-  // Ảnh
   if(/\.(jpg|jpeg|png|gif|webp)(\?.*)?$/i.test(url)) return {type:'img', src:url};
-
-  // Link khác → nhúng thẳng
   return {type:'iframe', src:url};
 }
-
 (function renderMedia(){
   var e = toEmbed(EMBED_URL);
   if(!e) return; // giữ placeholder
-
   var box = document.getElementById('mediaBox');
-  document.getElementById('mediaPh').style.display = 'none';
-
-  if(e.type === 'iframe'){
-    var frame = document.getElementById('previewFrame');
-    frame.style.display = 'block';
-    frame.src = e.src;
-    frame.setAttribute('allow', 'autoplay; fullscreen; picture-in-picture');
-    frame.setAttribute('frameborder', '0');
+  document.getElementById('mediaPh').style.display='none';
+  var frame = document.getElementById('previewFrame');
+  if(e.type==='iframe'){
+    frame.style.display='block'; frame.src=e.src;
   } else {
-    var el = e.type === 'video' ? document.createElement('video') : document.createElement('img');
-    el.src = e.src;
-    el.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover';
-
-    if(e.type === 'video'){
-      el.autoplay   = true;
-      el.muted      = true;   // bắt buộc để autoplay hoạt động
-      el.loop       = true;
-      el.playsInline = true;
-      el.controls   = false;  // ẩn thanh điều khiển / thông tin
-    }
+    var el = e.type==='video' ? document.createElement('video') : document.createElement('img');
+    el.src=e.src; el.style.cssText='position:absolute;inset:0;width:100%;height:100%;object-fit:cover';
+    if(e.type==='video'){ el.controls=true; el.playsInline=true; }
     box.appendChild(el);
   }
 })();
